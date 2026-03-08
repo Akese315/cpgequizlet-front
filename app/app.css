@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles can go here */
+:root {
+    /* Nouvelle Palette Moderne & Contraste Amélioré */
+    --NavyBlue: #1e3a5f;
+    --SkyBlue: #3b82f6;
+    /* Accent / Primary */
+    --SkyBlueDark: #2563eb;
+    --SoftWhite: #f8fafc;
+    /* bg-main */
+    --PureWhite: #ffffff;
+    /* surface */
+    --SlateGray: #64748b;
+    /* text-muted */
+    --Charcoal: #334155;
+    /* text-main */
+    --CoralRed: #ef4444;
+    /* Actions secondaires ou erreurs */
+
+    /* Le fond principal de l'app */
+    --bg-main: var(--SoftWhite);
+
+    /* Action principale (Boutons, liens importants) */
+    --primary: var(--SkyBlue);
+    --primary-hover: var(--SkyBlueDark);
+
+    /* Action secondaire (Boutons moins importants, bordures) */
+    --secondary: var(--NavyBlue);
+    --secondary-hover: #172a45;
+
+    /* Texte et Titres */
+    --text-main: var(--Charcoal);
+    --text-muted: var(--SlateGray);
+
+    /* Éléments décoratifs ou cartes */
+    --surface: var(--PureWhite);
+}
+
+body {
+    margin: 0;
+}

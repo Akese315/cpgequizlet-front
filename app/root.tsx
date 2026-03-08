@@ -6,11 +6,14 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { useEffect } from "react";
+import { useUserStore } from "./store/userStore";
 
-import type { Route } from "./+types/root";
-import "./app.css";
 
-export const links: Route.LinksFunction = () => [
+
+import appStylesHref from "./app.css?url";
+
+export const links = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -21,6 +24,7 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
+  { rel: "stylesheet", href: appStylesHref },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -42,10 +46,53 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const { setUser } = useUserStore();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    console.warn({ token, userId })
+
+    if (token && userId) {
+      const fetchUserInfo = async () => {
+        try {
+          // Utilise une requête POST avec un corps JSON pour correspondre à web::Json<UserInfoQuery> côté Rust
+          const response = await fetch(`http://localhost:8080/user/info`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user_id: userId,
+              user_token: token,
+            }),
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data)
+            setUser({
+              id: data.user_id,
+              token: data.user_token,
+              email: data.email,
+              pseudo: data.first_name || '', // On utilise first_name en guise d'affichage par défaut si besoin
+              firstName: data.first_name,
+              lastName: data.last_name,
+              role: data.role || 'student',
+            });
+          }
+        } catch (error) {
+          console.error("Erreur lors de la récupération des infos utilisateur:", error);
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [setUser]);
+
   return <Outlet />;
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary({ error }: { error: unknown }) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
   let stack: string | undefined;

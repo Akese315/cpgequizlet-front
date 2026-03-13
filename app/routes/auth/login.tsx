@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 import { useUserStore } from '../../store/userStore';
 import type { MetaFunction } from "react-router";
+import { API_URL } from '../../config';
 import './auth.css';
 
 export const meta: MetaFunction = () => {
@@ -31,7 +32,7 @@ export default function Login() {
     const fetchUserInfo = async (user_id: any, user_token: any) => {
         try {
             // Utilise une requête POST avec un corps JSON pour correspondre à web::Json<UserInfoQuery> côté Rust
-            const response = await fetch(`http://localhost:8080/user/info`, {
+            const response = await fetch(`${API_URL}/user/info`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ export default function Login() {
             const hashedPassword = await hashPassword(password);
 
             // TODO: Remplace cette URL par l'endpoint réel de ton backend (ex: http://localhost:8080/login)
-            const response = await fetch('http://localhost:8080/auth/login', {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

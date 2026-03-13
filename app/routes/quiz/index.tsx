@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence } from 'framer-motion';
 import Flashcard, { renderMixedText } from '../../components/Flashcard';
+import QuoteGame from '../../components/QuoteGame';
 import { useErrorStore } from '../../store/errorStore';
+import { API_URL } from '../../config';
 import type { MetaFunction } from "react-router";
 
 import './quiz.css';
@@ -31,8 +33,8 @@ interface Question {
 }
 
 
-const fetchQuestionsByTheme = async (themeId: string, quizId: string | undefined): Promise<Question[]> => {
-    let url = `http://localhost:8080/quiz?subject=${themeId}`;
+const fetchQuestionsByTheme = async (subjectId: string, quizId: string | undefined): Promise<Question[]> => {
+    let url = `${API_URL}/quiz?subject=${subjectId}`;
     if (quizId) {
         url += `&id=${quizId}`;
     }
@@ -49,7 +51,7 @@ const ThemeQuiz = () => {
     const { id: quizId } = useParams();
     const navigate = useNavigate();
     // On récupère l'id depuis l'url par ex: /quiz/3/theme?id=maths
-    const themeId = searchParams.get('id') || 'inconnu';
+    const subjectId = searchParams.get('id') || 'inconnu';
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [loading, setLoading] = useState(true);
@@ -69,7 +71,7 @@ const ThemeQuiz = () => {
     // Effet réseau au chargement pour simuler le fetch serveur
     useEffect(() => {
         loadQuestions();
-    }, [themeId, quizId]);
+    }, [subjectId, quizId]);
 
     const handleProposalClick = (index: number) => {
         if (selectedAnswer !== null) return; // Empêche le multi-clic
@@ -93,25 +95,25 @@ const ThemeQuiz = () => {
             const gained = 10 + xpBonus;
             setLastXpGain(gained);
             setXp(prev => prev + gained);
+
+            // Transition automatique après 1 seconde si bonne réponse
+            setTimeout(() => {
+                handleNextQuestion();
+            }, 1000);
         } else {
             setStreak(0);
             setLastXpGain(0);
         }
-
-        // Transition automatique après feedback
-        setTimeout(() => {
-            handleNextQuestion();
-        }, 1200);
     };
 
     const loadQuestions = async () => {
         setLoading(true);
         try {
-            const data = await fetchQuestionsByTheme(themeId, quizId);
+            const data = await fetchQuestionsByTheme(subjectId, quizId);
             setQuestions(data);
 
             if (!quizId && data.length > 0 && data[0].uuid) {
-                window.history.replaceState(null, '', `/quiz/${data[0].uuid}/subject?id=${themeId}`);
+                window.history.replaceState(null, '', `/quiz/${data[0].uuid}/subject?id=${subjectId}`);
             }
         } catch (error: any) {
             console.error("Erreur de récupération :", error);
@@ -124,13 +126,13 @@ const ThemeQuiz = () => {
         setLoading(true);
         try {
             // On force un fetch sans quizId pour récupérer un quiz aléatoire du même thème
-            const data = await fetchQuestionsByTheme(themeId, undefined);
+            const data = await fetchQuestionsByTheme(subjectId, undefined);
             setQuestions(data);
             setCurrentIndex(0);
             setSelectedAnswer(null);
 
             if (data.length > 0 && data[0].uuid) {
-                window.history.replaceState(null, '', `/quiz/${data[0].uuid}/subject?id=${themeId}`);
+                window.history.replaceState(null, '', `/quiz/${data[0].uuid}/subject?id=${subjectId}`);
             }
         } catch (error: any) {
             console.error("Erreur :", error);
@@ -145,7 +147,7 @@ const ThemeQuiz = () => {
             setSelectedAnswer(null);
             setCurrentIndex(nextIdx);
             const nextQ = questions[nextIdx];
-            window.history.replaceState(null, '', `/quiz/${nextQ.uuid}/subject?id=${themeId}`);
+            window.history.replaceState(null, '', `/quiz/${nextQ.uuid}/subject?id=${subjectId}`);
         } else {
             fetchNewQuestion();
         }
@@ -168,7 +170,7 @@ const ThemeQuiz = () => {
     if (questions.length === 0) {
         return (
             <div className="quiz-page-container">
-                <h2>Oups, aucune question trouvée pour "{themeId}".</h2>
+                <h2>Oups, aucune question trouvée pour "{subjectId}".</h2>
                 <button className="quiz-next-btn" onClick={() => navigate('/quizzes')}>Retour aux thèmes</button>
             </div>
         );
@@ -225,6 +227,8 @@ const ThemeQuiz = () => {
         }
     }
 
+    const isQuoteTheme = ['philosophy', 'quotes'].includes(subjectId?.toLowerCase() || '');
+
     return (
         <motion.div
             className="quiz-page-container"
@@ -233,7 +237,7 @@ const ThemeQuiz = () => {
             animate="show"
         >
             <div className="quiz-header" style={{ width: '100%', maxWidth: '48rem' }}>
-                <h1 className="quiz-theme-title">{themeId} - Chapitre: {currentQ.chapter}</h1>
+                <h1 className="quiz-theme-title">{subjectId} - Chapter: {currentQ.chapter}</h1>
                 <div className="quiz-top-bar">
                     <span className="quiz-question-count">Question {currentIndex + 1} / {questions.length}</span>
                     <div className="progress-bar-container">
@@ -280,61 +284,77 @@ const ThemeQuiz = () => {
                         )}
                     </AnimatePresence>
 
-                    {/* FLashcard adaptative: on désactive le check manuel et on gère state vis isFlipped */}
-                    <Flashcard
-                        key={`flash-${currentQ.uuid}`}
-                        disableFlip={!isAnswered}
-                        isFlipped={isAnswered}
-                        front={{
-                            text: currentQ.question,
-                            imageUrl: `http://localhost:8080/quiz/image/${currentQ.uuid}`,
-                        }}
-                        back={{
-                            text: isAnswered
-                                ? (selectedAnswer === currentQ.correct_answer_index ? "✨ Correct !" : "❌ Mauvaise réponse")
-                                : "...",
-                        }}
-                    />
+                    {isQuoteTheme ? (
+                        <QuoteGame
+                            key={`quote-${currentQ.uuid}`}
+                            question={currentQ}
+                            onSuccess={() => {
+                                handleProposalClick(currentQ.correct_answer_index);
+                            }}
+                            onFail={() => {
+                                setStreak(0);
+                                setLastXpGain(0);
+                            }}
+                        />
+                    ) : (
+                        <>
+                            {/* FLashcard adaptative: on désactive le check manuel et on gère state vis isFlipped */}
+                            <Flashcard
+                                key={`flash-${currentQ.uuid}`}
+                                disableFlip={!isAnswered}
+                                isFlipped={isAnswered}
+                                front={{
+                                    text: currentQ.question,
+                                    imageUrl: `${API_URL}/quiz/image/${currentQ.uuid}`,
+                                }}
+                                back={{
+                                    text: isAnswered
+                                        ? (selectedAnswer === currentQ.correct_answer_index ? "✨ Correct !" : "❌ Mauvaise réponse")
+                                        : "...",
+                                }}
+                            />
 
-                    {/* Propositions dynamiques */}
-                    <div className="proposals-container">
-                        {parsedAnswers.map((proposal, idx) => {
-                            let btnClass = "proposal-btn";
-                            let icon = null;
+                            {/* Propositions dynamiques */}
+                            <div className="proposals-container">
+                                {parsedAnswers.map((proposal, idx) => {
+                                    let btnClass = "proposal-btn";
+                                    let icon = null;
 
-                            if (isAnswered) {
-                                if (idx === currentQ.correct_answer_index) {
-                                    btnClass += " correct";
-                                    icon = (
-                                        <svg className="feedback-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
+                                    if (isAnswered) {
+                                        if (idx === currentQ.correct_answer_index) {
+                                            btnClass += " correct";
+                                            icon = (
+                                                <svg className="feedback-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            );
+                                        } else if (idx === selectedAnswer) {
+                                            btnClass += " incorrect";
+                                            icon = (
+                                                <svg className="feedback-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                            );
+                                        }
+                                    }
+
+                                    return (
+                                        <button
+                                            key={`${currentQ.uuid}-${idx}`}
+                                            className={btnClass}
+                                            onClick={() => handleProposalClick(idx)}
+                                            disabled={isAnswered}
+                                        >
+                                            <span className="proposal-index">{String.fromCharCode(65 + idx)}</span>
+                                            <span>{renderMixedText(proposal)}</span>
+                                            {icon}
+                                        </button>
                                     );
-                                } else if (idx === selectedAnswer) {
-                                    btnClass += " incorrect";
-                                    icon = (
-                                        <svg className="feedback-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    );
-                                }
-                            }
-
-                            return (
-                                <button
-                                    key={`${currentQ.uuid}-${idx}`}
-                                    className={btnClass}
-                                    onClick={() => handleProposalClick(idx)}
-                                    disabled={isAnswered}
-                                >
-                                    <span className="proposal-index">{String.fromCharCode(65 + idx)}</span>
-                                    <span>{renderMixedText(proposal)}</span>
-                                    {icon}
-                                </button>
-                            );
-                        })}
-                    </div>
+                                })}
+                            </div>
+                        </>
+                    )}
                 </motion.div>
             </AnimatePresence>
 
@@ -361,7 +381,7 @@ const ThemeQuiz = () => {
                     </motion.button>
                 )}
 
-                {isAnswered && (
+                {isAnswered && selectedAnswer !== currentQ.correct_answer_index && (
                     <motion.button
                         className="quiz-next-btn"
                         onClick={handleNextQuestion}
@@ -369,7 +389,7 @@ const ThemeQuiz = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ type: "spring" }}
                     >
-                        Question Suivante
+                        Continuer
                     </motion.button>
                 )}
             </div>

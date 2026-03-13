@@ -8,6 +8,7 @@ import {
 } from "react-router";
 import { useEffect } from "react";
 import { useUserStore } from "./store/userStore";
+import { API_URL } from "./config";
 
 
 
@@ -58,7 +59,7 @@ export default function App() {
       const fetchUserInfo = async () => {
         try {
           // Utilise une requête POST avec un corps JSON pour correspondre à web::Json<UserInfoQuery> côté Rust
-          const response = await fetch(`http://localhost:8080/user/info`, {
+          const response = await fetch(`${API_URL}/user/info`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

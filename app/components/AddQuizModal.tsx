@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import type { DragEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useErrorStore } from '../store/errorStore';
+import { API_URL } from '../config';
 import './AddQuizModal.css';
 
 interface Answer {
@@ -37,13 +38,13 @@ const AddQuizModal: React.FC<AddQuizModalProps> = ({ isOpen, onClose, subjects }
     }, [subjectId]);
 
     const fetchThemes = async () => {
-        const response = await fetch(`http://localhost:8080/themes?subject=${subjectId}`);
+        const response = await fetch(`${API_URL}/themes?subject=${subjectId}`);
         const data = await response.json();
         setThemesAvailable(data);
     };
 
     const fetchChapters = async () => {
-        const response = await fetch(`http://localhost:8080/chapters?subject=${subjectId}`);
+        const response = await fetch(`${API_URL}/chapters?subject=${subjectId}`);
         const data = await response.json();
         setChaptersAvailable(data)
     }
@@ -111,7 +112,7 @@ const AddQuizModal: React.FC<AddQuizModalProps> = ({ isOpen, onClose, subjects }
         }
 
         try {
-            const response = await fetch('http://localhost:8080/quiz', {
+            const response = await fetch(`${API_URL}/quiz`, {
                 method: 'POST',
                 // Ne pas définir manuellement le Content-Type avec FormData, 
                 // sinon il manquera le boundary

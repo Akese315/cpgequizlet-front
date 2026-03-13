@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 import { useUserStore } from '../../store/userStore';
 import type { MetaFunction } from "react-router";
+import { API_URL } from '../../config';
 import './auth.css';
 
 export const meta: MetaFunction = () => {
@@ -35,7 +36,7 @@ export default function Register() {
     const fetchUserInfo = async (user_id: any, user_token: any) => {
         try {
             // Utilise une requête POST avec un corps JSON pour correspondre à web::Json<UserInfoQuery> côté Rust
-            const response = await fetch(`http://localhost:8080/user/info`, {
+            const response = await fetch(`${API_URL}/user/info`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +78,7 @@ export default function Register() {
         try {
             const password_hash = await hashPassword(password);
             // TODO: Remplace cette URL par l'endpoint réel de ton backend (ex: http://localhost:8080/register)
-            const response = await fetch('http://localhost:8080/auth/register', {
+            const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ export default function Register() {
 
             await fetchUserInfo(data.user_id, data.user_token)
 
-            navigate('/home'); // Redirection après connexion
+            navigate('/'); // Redirection vers l'accueil après inscription
         } catch (err: any) {
             setError(err.message || 'Une erreur est survenue.');
         } finally {

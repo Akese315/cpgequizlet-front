@@ -5,7 +5,6 @@ export default [
 
     route("/", "layouts/main-layout.tsx", [
         index("routes/home/index.tsx"),
-        route("home", "routes/home/index.tsx"),
         route("quizzes", "routes/quizzes/index.tsx"),
         route("login", "routes/auth/login.tsx"),
         route("register", "routes/auth/register.tsx"),

@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    --quote-bg: rgba(255, 255, 255, 0.05);
+    --quote-border: rgba(255, 255, 255, 0.1);
+    --quote-text: #e2e8f0;
+    --quote-primary: #818cf8;
+    --quote-primary-hover: #6366f1;
+    --quote-secondary: rgba(255, 255, 255, 0.1);
+    --quote-secondary-hover: rgba(255, 255, 255, 0.15);
+    --quote-error: rgba(239, 68, 68, 0.2);
+    --quote-success: rgba(34, 197, 94, 0.2);
+}
+
+.quote-game-card {
+    background: var(--quote-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--quote-border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 650px;
+    width: 100%;
+    margin: 2rem auto;
+    font-family: 'Inter', sans-serif;
+    color: var(--quote-text);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.quote-game-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.quote-game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--quote-border);
+    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.quote-theme-pill,
+.quote-difficulty-pill {
+    background: rgba(129, 140, 248, 0.15);
+    color: var(--quote-primary);
+    padding: 0.4rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(129, 140, 248, 0.3);
+}
+
+.quote-difficulty-pill {
+    background: rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.quote-prompt {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #f8fafc;
+    text-align: center;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.quote-content-wrapper {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.quote-text-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    line-height: 1.6;
+    color: #f1f5f9;
+}
+
+.quote-icon-left,
+.quote-icon-right {
+    font-size: 2.5rem;
+    color: var(--quote-primary);
+    opacity: 0.5;
+    line-height: 1;
+    margin-top: -0.5rem;
+}
+
+.quote-revealed-text {
+    opacity: 0.9;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.quote-typing-area {
+    display: inline-flex;
+    flex-grow: 1;
+    margin-left: 0.5rem;
+}
+
+.quote-textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px dashed rgba(255, 255, 255, 0.3);
+    color: var(--quote-primary);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    line-height: 1.6;
+    resize: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.quote-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+    font-style: italic;
+}
+
+.quote-textarea:focus {
+    border-bottom-color: var(--quote-primary);
+    border-bottom-style: solid;
+}
+
+.quote-textarea.input-error {
+    color: #f87171;
+    border-bottom-color: #f87171;
+    animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+.quote-textarea.input-success {
+    color: #4ade80;
+    border-bottom-color: #4ade80;
+}
+
+.quote-feedback {
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: center;
+    border-left: 4px solid transparent;
+}
+
+.quote-feedback.error {
+    background: var(--quote-error);
+    border-left-color: #ef4444;
+    color: #fca5a5;
+}
+
+.quote-feedback.success {
+    background: var(--quote-success);
+    border-left-color: #22c55e;
+    color: #bbf7d0;
+}
+
+.quote-feedback.info {
+    background: rgba(56, 189, 248, 0.1);
+    border-left-color: #38bdf8;
+    color: #bae6fd;
+}
+
+.quote-hint {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #f87171;
+    font-style: italic;
+}
+
+.quote-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+button[class^="quote-btn"] {
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+}
+
+.quote-btn-primary {
+    background: var(--quote-primary);
+    color: white;
+    box-shadow: 0 4px 14px rgba(129, 140, 248, 0.4);
+}
+
+.quote-btn-primary:hover:not(:disabled) {
+    background: var(--quote-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(129, 140, 248, 0.5);
+}
+
+.quote-btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.quote-btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.quote-btn-secondary {
+    background: var(--quote-secondary);
+    color: var(--quote-text);
+    border: 1px solid var(--quote-border);
+}
+
+.quote-btn-secondary:hover {
+    background: var(--quote-secondary-hover);
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .quote-game-card {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .quote-text-container {
+        font-size: 1.3rem;
+    }
+
+    .quote-textarea {
+        font-size: 1.3rem;
+    }
+}

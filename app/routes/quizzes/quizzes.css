@@ -24,7 +24,7 @@
 .add-quiz-btn {
     position: absolute;
     right: 1.5rem;
-    background-color: var(--primary, #3b82f6);
+    background-color: var(--primary, #e8873a);
     color: white;
     border: none;
     border-radius: 50%;

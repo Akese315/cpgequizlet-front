@@ -267,11 +267,11 @@ const ThemeQuiz = () => {
 
             <div className="quiz-header" style={{ width: '100%', maxWidth: '48rem' }}>
                 <h1 className="quiz-theme-title">
-                    {subjectId}
+                    {decodeURIComponent(subjectId).charAt(0).toUpperCase() + decodeURIComponent(subjectId).slice(1)}
                     {selectedChapter && (
                         <span className="chapter-badge">
                             <span className="chapter-badge-dot" />
-                            {selectedChapter}
+                            {decodeURIComponent(selectedChapter).replace(/_/g, ' ')}
                         </span>
                     )}
                 </h1>

@@ -81,8 +81,8 @@
 .form-select:focus,
 .form-textarea:focus {
     outline: none;
-    border-color: var(--primary, #3b82f6);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    border-color: var(--primary, #e8873a);
+    box-shadow: 0 0 0 3px rgba(232, 135, 58, 0.2);
     background-color: white;
 }
 
@@ -107,8 +107,8 @@
 }
 
 .drag-drop-zone.dragging {
-    border-color: var(--primary, #3b82f6);
-    background-color: rgba(59, 130, 246, 0.05);
+    border-color: var(--primary, #e8873a);
+    background-color: rgba(232, 135, 58, 0.05);
 }
 
 .drag-drop-zone.has-file {
@@ -142,7 +142,7 @@
 .remove-file-btn {
     border: none;
     background: transparent;
-    color: var(--primary, #3b82f6);
+    color: var(--primary, #e8873a);
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 500;
@@ -156,8 +156,8 @@
 }
 
 .add-answer-btn {
-    background-color: rgba(59, 130, 246, 0.1);
-    color: var(--primary, #3b82f6);
+    background-color: rgba(232, 135, 58, 0.1);
+    color: var(--primary, #e8873a);
     border: none;
     padding: 0.25rem 0.75rem;
     border-radius: 0.25rem;
@@ -168,7 +168,7 @@
 }
 
 .add-answer-btn:hover {
-    background-color: rgba(59, 130, 246, 0.2);
+    background-color: rgba(232, 135, 58, 0.2);
 }
 
 .answers-list {
@@ -236,7 +236,7 @@
     width: 1rem;
     height: 1rem;
     cursor: pointer;
-    accent-color: var(--primary, #3b82f6);
+    accent-color: var(--primary, #e8873a);
 }
 
 .modal-actions {
@@ -269,14 +269,14 @@
 }
 
 .btn-primary {
-    background-color: var(--primary, #3b82f6);
-    border: 1px solid var(--primary, #3b82f6);
+    background-color: var(--primary, #e8873a);
+    border: 1px solid var(--primary, #e8873a);
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
-    border-color: #2563eb;
+    background-color: #d4762e;
+    border-color: #d4762e;
 }
 
 @media (max-width: 640px) {

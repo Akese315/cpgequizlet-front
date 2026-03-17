@@ -23,7 +23,7 @@ const Navbar = () => {
                     {/* Logo Section */}
                     <div className="logo-section">
                         <Link to="/" className="logo-link" onClick={closeMenu}>
-                            Quizlet<span className="logo-highlight">CPGE</span>
+                            Aki<span className="logo-highlight">Quiz</span>
                         </Link>
                     </div>
 

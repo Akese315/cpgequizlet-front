@@ -10,7 +10,7 @@
 
 .profile-card {
     background: var(--surface);
-    border: 1px solid rgba(205, 70, 49, 0.2);
+    border: 1px solid rgba(232, 135, 58, 0.15);
     border-radius: 16px;
     padding: 3rem;
     width: 100%;
@@ -36,7 +36,7 @@
     justify-content: center;
     line-height: 1;
     border-radius: 50%;
-    box-shadow: 0 4px 15px rgba(205, 70, 49, 0.3);
+    box-shadow: 0 4px 15px rgba(232, 135, 58, 0.3);
 }
 
 .profile-title {
@@ -55,7 +55,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background: rgba(205, 70, 49, 0.03);
+    background: rgba(232, 135, 58, 0.05);
     padding: 1.5rem;
     border-radius: 12px;
     margin-bottom: 2rem;
@@ -82,7 +82,7 @@
 .profile-badge {
     display: inline-block;
     padding: 0.3rem 0.8rem;
-    background: rgba(244, 162, 97, 0.2);
+    background: rgba(232, 135, 58, 0.12);
     color: var(--secondary);
     border-radius: 20px;
     font-size: 0.9rem;

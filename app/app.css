@@ -4,36 +4,38 @@
 
 /* Custom styles can go here */
 :root {
-    /* Nouvelle Palette Moderne & Contraste Amélioré */
-    --NavyBlue: #1e3a5f;
-    --SkyBlue: #3b82f6;
+    /* 🦊 Palette Renard — Inspirée du logo */
+    --DeepNavy: #2d3a5c;
+    --FoxOrange: #e8873a;
     /* Accent / Primary */
-    --SkyBlueDark: #2563eb;
-    --SoftWhite: #f8fafc;
-    /* bg-main */
+    --FoxOrangeDark: #d4762e;
+    --SoftCream: #faf6f1;
+    /* bg-main — fond chaud */
     --PureWhite: #ffffff;
     /* surface */
-    --SlateGray: #64748b;
+    --SlateNavy: #5a6785;
     /* text-muted */
-    --Charcoal: #334155;
+    --DarkNavy: #1e2a4a;
     /* text-main */
+    --WarmCream: #f5e6d0;
+    /* Crème du renard — accents décoratifs */
     --CoralRed: #ef4444;
-    /* Actions secondaires ou erreurs */
+    /* Erreurs */
 
     /* Le fond principal de l'app */
-    --bg-main: var(--SoftWhite);
+    --bg-main: var(--SoftCream);
 
     /* Action principale (Boutons, liens importants) */
-    --primary: var(--SkyBlue);
-    --primary-hover: var(--SkyBlueDark);
+    --primary: var(--FoxOrange);
+    --primary-hover: var(--FoxOrangeDark);
 
-    /* Action secondaire (Boutons moins importants, bordures) */
-    --secondary: var(--NavyBlue);
-    --secondary-hover: #172a45;
+    /* Action secondaire (Titres, textes importants) */
+    --secondary: var(--DeepNavy);
+    --secondary-hover: #1e2a4a;
 
     /* Texte et Titres */
-    --text-main: var(--Charcoal);
-    --text-muted: var(--SlateGray);
+    --text-main: var(--DarkNavy);
+    --text-muted: var(--SlateNavy);
 
     /* Éléments décoratifs ou cartes */
     --surface: var(--PureWhite);

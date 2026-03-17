@@ -7,9 +7,9 @@ import './home.css';
 
 export const meta: MetaFunction = () => {
     return [
-        { title: "QuizletCPGE - L'excellence en Prépa commence ici" },
+        { title: "AkiQuiz - L'excellence en Prépa commence ici" },
         { name: "description", content: "Optimisez vos révisions en CPGE scientifique avec nos quiz interactifs et flashcards. Mathématiques, Physique, Chimie et plus pour réussir vos concours." },
-        { property: "og:title", content: "QuizletCPGE - Révisez pour les concours Prépa" },
+        { property: "og:title", content: "AkiQuiz - Révisez pour les concours Prépa" },
         { property: "og:description", content: "Plateforme de révision gratuite pour les étudiants en CPGE MPSI, PCSI, PTSI." },
         { name: "keywords", content: "CPGE, Prépa, Quiz, Flashcards, Mathématiques, Physique, Concours, Révisions" },
     ];

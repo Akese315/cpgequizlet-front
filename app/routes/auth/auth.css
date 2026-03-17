@@ -63,7 +63,7 @@
 .auth-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.2);
+    box-shadow: 0 0 0 2px rgba(232, 135, 58, 0.2);
 }
 
 .auth-submit-btn {

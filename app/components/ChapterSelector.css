@@ -1,0 +1,405 @@
+/* ============================
+   Chapter Selector Component
+   ============================ */
+
+.chapter-selector-wrapper {
+    width: 100%;
+    max-width: 48rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 40;
+}
+
+/* Toggle Button */
+.chapter-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    background: var(--surface);
+    border: 2px solid rgba(59, 130, 246, 0.15);
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    color: var(--text-main);
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.chapter-toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.03), rgba(30, 58, 95, 0.03));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.chapter-toggle-btn:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.12);
+    transform: translateY(-1px);
+}
+
+.chapter-toggle-btn:hover::before {
+    opacity: 1;
+}
+
+.chapter-toggle-btn.active {
+    border-color: var(--primary);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+}
+
+.chapter-toggle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.65rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    flex-shrink: 0;
+}
+
+.chapter-toggle-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+.chapter-toggle-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.chapter-toggle-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.chapter-toggle-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--text-muted);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.chapter-toggle-arrow.open {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+/* Dropdown Panel */
+.chapter-dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 39;
+}
+
+.chapter-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border: 2px solid rgba(59, 130, 246, 0.15);
+    border-radius: 1rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    z-index: 41;
+}
+
+.chapter-dropdown-header {
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.chapter-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    font-family: inherit;
+}
+
+.chapter-search-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+.chapter-search-icon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.chapter-dropdown-list {
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 0.5rem;
+    scroll-behavior: smooth;
+}
+
+.chapter-dropdown-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chapter-dropdown-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chapter-dropdown-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+}
+
+.chapter-dropdown-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Chapter Option */
+.chapter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    color: var(--text-main);
+    text-align: left;
+}
+
+.chapter-option:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(30, 58, 95, 0.04));
+    transform: translateX(4px);
+}
+
+.chapter-option.selected {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(30, 58, 95, 0.06));
+}
+
+.chapter-option-indicator {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    background: transparent;
+}
+
+.chapter-option.selected .chapter-option-indicator {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.chapter-option-check {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: white;
+}
+
+.chapter-option.selected .chapter-option-check {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.chapter-option-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+.chapter-option-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chapter-option-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* "All chapters" special option */
+.chapter-option.all-chapters {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.85rem;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.chapter-option.all-chapters .chapter-option-indicator {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-color: transparent;
+}
+
+.chapter-option.all-chapters .chapter-option-check {
+    color: white;
+}
+
+/* No results */
+.chapter-no-results {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.chapter-no-results-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+/* Loading skeleton */
+.chapter-skeleton {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.chapter-skeleton-circle {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.06) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.chapter-skeleton-text {
+    height: 0.9rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.06) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Selected chapter badge in the quiz header */
+.chapter-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.85rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(30, 58, 95, 0.08));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-left: 0.5rem;
+}
+
+.chapter-badge-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+/* ============================
+   Responsive — Mobile
+   ============================ */
+@media (max-width: 640px) {
+    .chapter-selector-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .chapter-toggle-btn {
+        padding: 0.7rem 1rem;
+        border-radius: 0.85rem;
+    }
+
+    .chapter-toggle-icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.5rem;
+    }
+
+    .chapter-toggle-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .chapter-toggle-label {
+        font-size: 0.65rem;
+    }
+
+    .chapter-toggle-value {
+        font-size: 0.85rem;
+    }
+
+    .chapter-dropdown {
+        border-radius: 0.85rem;
+    }
+
+    .chapter-dropdown-list {
+        max-height: 220px;
+    }
+
+    .chapter-option {
+        padding: 0.65rem 0.85rem;
+    }
+
+    .chapter-option-name {
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================
+   Animations (Framer Motion will handle most,
+   but we add CSS-level transitions too)
+   ============================ */
+.chapter-dropdown {
+    transform-origin: top center;
+}

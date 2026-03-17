@@ -106,3 +106,54 @@
     box-sizing: border-box;
     overflow-x: auto;
 }
+
+/* ==============================
+   Responsive — Mobile
+   ============================== */
+@media (max-width: 640px) {
+    .flashcard-container {
+        height: 18rem;
+        margin: 1rem auto;
+    }
+
+    .flashcard-side {
+        padding: 1.25rem;
+    }
+
+    .flashcard-text {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+
+    .flashcard-quote {
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .flashcard-quote-author {
+        font-size: 0.85rem;
+    }
+
+    .flashcard-latex {
+        font-size: 1.1rem;
+        padding: 0.75rem;
+    }
+
+    .flashcard-image {
+        max-height: 40%;
+    }
+}
+
+@media (max-width: 400px) {
+    .flashcard-container {
+        height: 15rem;
+    }
+
+    .flashcard-side {
+        padding: 1rem;
+    }
+
+    .flashcard-text {
+        font-size: 1rem;
+    }
+}

@@ -112,3 +112,55 @@
     background: rgba(231, 76, 60, 0.1);
     border-color: #e74c3c;
 }
+
+/* ==============================
+   Responsive — Mobile
+   ============================== */
+@media (max-width: 640px) {
+    .profile-container {
+        padding: 1.5rem 1rem;
+        align-items: flex-start;
+    }
+
+    .profile-card {
+        padding: 2rem 1.5rem;
+        border-radius: 12px;
+    }
+
+    .profile-avatar {
+        width: 64px;
+        height: 64px;
+        font-size: 2rem;
+    }
+
+    .profile-title {
+        font-size: 1.6rem;
+    }
+
+    .profile-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .profile-details {
+        padding: 1rem;
+    }
+
+    .profile-detail-item p {
+        font-size: 1rem;
+    }
+
+    .btn-logout {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .profile-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .profile-title {
+        font-size: 1.4rem;
+    }
+}

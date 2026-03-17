@@ -130,3 +130,77 @@
     line-height: 1.6;
     margin: 0;
 }
+
+/* ==============================
+   Responsive — Mobile
+   ============================== */
+@media (max-width: 640px) {
+    .quizzes-container {
+        padding: 1.25rem 0;
+    }
+
+    .quizzes-header {
+        margin-bottom: 1.5rem;
+        padding: 0 0.75rem;
+    }
+
+    .quizzes-title {
+        font-size: 1.6rem;
+    }
+
+    .add-quiz-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        right: 0.75rem;
+    }
+
+    .add-quiz-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .themes-grid {
+        gap: 1rem;
+        padding: 0 0.75rem;
+    }
+
+    .theme-image-wrapper {
+        height: 10rem;
+    }
+
+    .theme-content {
+        padding: 1rem;
+    }
+
+    .theme-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .theme-description {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    .theme-card:hover {
+        transform: translateY(-4px);
+    }
+}
+
+@media (max-width: 400px) {
+    .quizzes-title {
+        font-size: 1.35rem;
+    }
+
+    .theme-image-wrapper {
+        height: 8rem;
+    }
+
+    .theme-content {
+        padding: 0.85rem;
+    }
+
+    .theme-title {
+        font-size: 1.1rem;
+    }
+}

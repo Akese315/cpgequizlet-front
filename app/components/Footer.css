@@ -180,3 +180,51 @@
     font-weight: 500;
     margin: 0;
 }
+
+/* ==============================
+   Responsive — Mobile
+   ============================== */
+@media (max-width: 640px) {
+    .footer-container {
+        padding: 2rem 1rem;
+    }
+
+    .footer-grid {
+        gap: 1.5rem;
+    }
+
+    .footer-logo {
+        font-size: 1.3rem;
+    }
+
+    .footer-description {
+        font-size: 0.8rem;
+    }
+
+    .social-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    .footer-section-title {
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .footer-link {
+        font-size: 0.85rem;
+    }
+
+    .footer-bottom {
+        margin-top: 2rem;
+        padding-top: 1.25rem;
+    }
+
+    .footer-copyright {
+        font-size: 0.8rem;
+    }
+
+    .footer-credits {
+        font-size: 0.7rem;
+    }
+}

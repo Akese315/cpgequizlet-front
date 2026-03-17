@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence } from 'framer-motion';
 import Flashcard, { renderMixedText } from '../../components/Flashcard';
 import QuoteGame from '../../components/QuoteGame';
+import ChapterSelector from '../../components/ChapterSelector';
 import { useErrorStore } from '../../store/errorStore';
 import { API_URL } from '../../config';
 import type { MetaFunction } from "react-router";
@@ -33,10 +34,13 @@ interface Question {
 }
 
 
-const fetchQuestionsByTheme = async (subjectId: string, quizId: string | undefined): Promise<Question[]> => {
+const fetchQuestionsByTheme = async (subjectId: string, quizId: string | undefined, chapter?: string | null): Promise<Question[]> => {
     let url = `${API_URL}/quiz?subject=${subjectId}`;
     if (quizId) {
         url += `&id=${quizId}`;
+    }
+    if (chapter) {
+        url += `&chapter=${encodeURIComponent(chapter)}`;
     }
     const response = await fetch(url);
     if (!response.ok) {
@@ -52,6 +56,7 @@ const ThemeQuiz = () => {
     const navigate = useNavigate();
     // On récupère l'id depuis l'url par ex: /quiz/3/theme?id=maths
     const subjectId = searchParams.get('id') || 'inconnu';
+    const selectedChapter = searchParams.get('chapter');
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [loading, setLoading] = useState(true);
@@ -71,7 +76,7 @@ const ThemeQuiz = () => {
     // Effet réseau au chargement pour simuler le fetch serveur
     useEffect(() => {
         loadQuestions();
-    }, [subjectId, quizId]);
+    }, [subjectId, quizId, selectedChapter]);
 
     const handleProposalClick = (index: number) => {
         if (selectedAnswer !== null) return; // Empêche le multi-clic
@@ -106,14 +111,22 @@ const ThemeQuiz = () => {
         }
     };
 
+    const buildUrl = (uuid: string) => {
+        let url = `/quiz/${uuid}/subject?id=${subjectId}`;
+        if (selectedChapter) {
+            url += `&chapter=${encodeURIComponent(selectedChapter)}`;
+        }
+        return url;
+    };
+
     const loadQuestions = async () => {
         setLoading(true);
         try {
-            const data = await fetchQuestionsByTheme(subjectId, quizId);
+            const data = await fetchQuestionsByTheme(subjectId, quizId, selectedChapter);
             setQuestions(data);
 
             if (!quizId && data.length > 0 && data[0].uuid) {
-                window.history.replaceState(null, '', `/quiz/${data[0].uuid}/subject?id=${subjectId}`);
+                window.history.replaceState(null, '', buildUrl(data[0].uuid));
             }
         } catch (error: any) {
             console.error("Erreur de récupération :", error);
@@ -126,13 +139,13 @@ const ThemeQuiz = () => {
         setLoading(true);
         try {
             // On force un fetch sans quizId pour récupérer un quiz aléatoire du même thème
-            const data = await fetchQuestionsByTheme(subjectId, undefined);
+            const data = await fetchQuestionsByTheme(subjectId, undefined, selectedChapter);
             setQuestions(data);
             setCurrentIndex(0);
             setSelectedAnswer(null);
 
             if (data.length > 0 && data[0].uuid) {
-                window.history.replaceState(null, '', `/quiz/${data[0].uuid}/subject?id=${subjectId}`);
+                window.history.replaceState(null, '', buildUrl(data[0].uuid));
             }
         } catch (error: any) {
             console.error("Erreur :", error);
@@ -147,7 +160,7 @@ const ThemeQuiz = () => {
             setSelectedAnswer(null);
             setCurrentIndex(nextIdx);
             const nextQ = questions[nextIdx];
-            window.history.replaceState(null, '', `/quiz/${nextQ.uuid}/subject?id=${subjectId}`);
+            window.history.replaceState(null, '', buildUrl(nextQ.uuid));
         } else {
             fetchNewQuestion();
         }
@@ -229,6 +242,16 @@ const ThemeQuiz = () => {
 
     const isQuoteTheme = ['philosophy', 'quotes'].includes(subjectId?.toLowerCase() || '');
 
+    const handleChapterChange = (chapter: string | null) => {
+        // Reset quiz state when chapter changes
+        setCurrentIndex(0);
+        setSelectedAnswer(null);
+        setScore(0);
+        setXp(0);
+        setStreak(0);
+        setLastXpGain(0);
+    };
+
     return (
         <motion.div
             className="quiz-page-container"
@@ -236,8 +259,22 @@ const ThemeQuiz = () => {
             initial="hidden"
             animate="show"
         >
+            {/* Chapter Selector */}
+            <ChapterSelector
+                subject={subjectId}
+                onChapterChange={handleChapterChange}
+            />
+
             <div className="quiz-header" style={{ width: '100%', maxWidth: '48rem' }}>
-                <h1 className="quiz-theme-title">{subjectId} - Chapter: {currentQ.chapter}</h1>
+                <h1 className="quiz-theme-title">
+                    {subjectId}
+                    {selectedChapter && (
+                        <span className="chapter-badge">
+                            <span className="chapter-badge-dot" />
+                            {selectedChapter}
+                        </span>
+                    )}
+                </h1>
                 <div className="quiz-top-bar">
                     <span className="quiz-question-count">Question {currentIndex + 1} / {questions.length}</span>
                     <div className="progress-bar-container">

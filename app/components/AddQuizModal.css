@@ -282,10 +282,38 @@
 @media (max-width: 640px) {
     .modal-content {
         padding: 1.5rem;
+        max-height: 85vh;
+        border-radius: 0.85rem;
     }
-    
+
+    .modal-title {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
     .answer-options {
         flex-direction: column;
         gap: 0.75rem;
+    }
+
+    .drag-drop-zone {
+        padding: 1.25rem;
+        min-height: 90px;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn-secondary,
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .form-select,
+    .form-textarea {
+        font-size: 0.9rem;
     }
 }

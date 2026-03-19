@@ -108,6 +108,64 @@
 }
 
 /* ==============================
+   Flashcard Custom Features
+   ============================== */
+.flashcard-share-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.flashcard-share-btn:hover {
+    color: var(--primary);
+    background-color: rgba(0,0,0,0.05);
+}
+
+.flashcard-share-btn.copied {
+    color: #10B981;
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.flashcard-explanation {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: linear-gradient(145deg, rgba(232, 135, 58, 0.08) 0%, rgba(232, 135, 58, 0.02) 100%);
+    border: 1px solid rgba(232, 135, 58, 0.2);
+    border-radius: 0.75rem;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.explanation-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.explanation-body {
+    line-height: 1.5;
+    color: var(--text-muted);
+}
+
+/* ==============================
    Responsive — Mobile
    ============================== */
 @media (max-width: 640px) {

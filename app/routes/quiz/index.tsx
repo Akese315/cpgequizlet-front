@@ -31,6 +31,7 @@ interface Question {
     difficulty: number;
     chapter: string;
     correct_answer_index: number;
+    explication?: string;
 }
 
 
@@ -73,6 +74,32 @@ const ThemeQuiz = () => {
     const [streak, setStreak] = useState(0);
     const [lastXpGain, setLastXpGain] = useState(0);
 
+    const currentQ = questions[currentIndex];
+
+    const { shuffledAnswers, correctIndex } = React.useMemo(() => {
+        if (!currentQ || !currentQ.answers) return { shuffledAnswers: [], correctIndex: -1 };
+
+        const answersArray = Array.isArray(currentQ.answers) ? currentQ.answers : [currentQ.answers];
+
+        const mappedAnswers = answersArray.map((answer, index) => ({
+            text: answer,
+            isCorrect: index === currentQ.correct_answer_index
+        }));
+
+        const shuffled = [...mappedAnswers];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
+        const newCorrectIndex = shuffled.findIndex(a => a.isCorrect);
+
+        return {
+            shuffledAnswers: shuffled.map(a => a.text),
+            correctIndex: newCorrectIndex !== -1 ? newCorrectIndex : 0,
+        };
+    }, [currentQ?.uuid, currentQ?.answers]);
+
     // Effet réseau au chargement pour simuler le fetch serveur
     useEffect(() => {
         loadQuestions();
@@ -82,7 +109,7 @@ const ThemeQuiz = () => {
         if (selectedAnswer !== null) return; // Empêche le multi-clic
         setSelectedAnswer(index);
 
-        const isCorrect = index === questions[currentIndex].correct_answer_index;
+        const isCorrect = index === correctIndex;
 
         if (isCorrect) {
             setScore(prev => prev + 1);
@@ -192,53 +219,7 @@ const ThemeQuiz = () => {
 
 
 
-    const currentQ = questions[currentIndex];
     const isAnswered = selectedAnswer !== null;
-
-    let parsedAnswers: string[] = [];
-    if (currentQ) {
-        // Obtenir la string brute (si le backend a split() par erreur, on recolle pour réparer les dégâts)
-        let rawAnswers = Array.isArray(currentQ.answers)
-            ? currentQ.answers.join(",")
-            : currentQ.answers;
-
-        try {
-            parsedAnswers = JSON.parse(rawAnswers);
-        } catch {
-            try {
-                parsedAnswers = JSON.parse(rawAnswers.replace(/\\/g, '\\\\'));
-            } catch {
-                // Fallback : Séparer par virgule mais ignorer celles dans les parenthèses f(x,t) et le mode mathématique
-                parsedAnswers = [];
-                let current = '';
-                let depth = 0;
-                let inMath = false;
-                for (let i = 0; i < rawAnswers.length; i++) {
-                    const char = rawAnswers[i];
-                    const nextChar = rawAnswers[i + 1] || '';
-
-                    if (char === '$') {
-                        inMath = !inMath;
-                    } else if (char === '\\' && (nextChar === '(' || nextChar === '[')) {
-                        inMath = true;
-                    } else if (char === '\\' && (nextChar === ')' || nextChar === ']')) {
-                        inMath = false;
-                    }
-
-                    if (char === '(' || char === '[' || char === '{') depth++;
-                    else if (char === ')' || char === ']' || char === '}') depth--;
-
-                    if (char === ',' && depth === 0 && !inMath) {
-                        parsedAnswers.push(current.trim());
-                        current = '';
-                    } else {
-                        current += char;
-                    }
-                }
-                if (current) parsedAnswers.push(current.trim());
-            }
-        }
-    }
 
     const isQuoteTheme = ['philosophy', 'quotes'].includes(subjectId?.toLowerCase() || '');
 
@@ -308,7 +289,7 @@ const ThemeQuiz = () => {
                     style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}
                 >
                     <AnimatePresence>
-                        {lastXpGain > 0 && isAnswered && selectedAnswer === currentQ.correct_answer_index && (
+                        {lastXpGain > 0 && isAnswered && selectedAnswer === correctIndex && (
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.5, y: 20 }}
                                 animate={{ opacity: 1, scale: 1.2, y: -20 }}
@@ -326,7 +307,7 @@ const ThemeQuiz = () => {
                             key={`quote-${currentQ.uuid}`}
                             question={currentQ}
                             onSuccess={() => {
-                                handleProposalClick(currentQ.correct_answer_index);
+                                handleProposalClick(correctIndex);
                             }}
                             onFail={() => {
                                 setStreak(0);
@@ -346,19 +327,20 @@ const ThemeQuiz = () => {
                                 }}
                                 back={{
                                     text: isAnswered
-                                        ? (selectedAnswer === currentQ.correct_answer_index ? "✨ Correct !" : "❌ Mauvaise réponse")
+                                        ? (selectedAnswer === correctIndex ? "✨ Correct !" : "❌ Mauvaise réponse")
                                         : "...",
+                                    explication: isAnswered && currentQ.explication ? currentQ.explication : undefined,
                                 }}
                             />
 
                             {/* Propositions dynamiques */}
                             <div className="proposals-container">
-                                {parsedAnswers.map((proposal, idx) => {
+                                {shuffledAnswers.map((proposal, idx) => {
                                     let btnClass = "proposal-btn";
                                     let icon = null;
 
                                     if (isAnswered) {
-                                        if (idx === currentQ.correct_answer_index) {
+                                        if (idx === correctIndex) {
                                             btnClass += " correct";
                                             icon = (
                                                 <svg className="feedback-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -418,7 +400,7 @@ const ThemeQuiz = () => {
                     </motion.button>
                 )}
 
-                {isAnswered && selectedAnswer !== currentQ.correct_answer_index && (
+                {isAnswered && selectedAnswer !== correctIndex && (
                     <motion.button
                         className="quiz-next-btn"
                         onClick={handleNextQuestion}

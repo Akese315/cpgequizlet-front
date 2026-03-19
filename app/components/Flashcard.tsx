@@ -178,6 +178,7 @@ const Flashcard: React.FC<FlashcardProps> = ({ front, back, isFlipped: propIsFli
 
     return (
         <div className="flashcard-container" onClick={handleFlip}>
+            {shareButton}
             <motion.div
                 className="flashcard"
                 initial={false}
@@ -185,11 +186,9 @@ const Flashcard: React.FC<FlashcardProps> = ({ front, back, isFlipped: propIsFli
                 transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
             >
                 <div className="flashcard-side">
-                    {shareButton}
                     {renderContent(front)}
                 </div>
                 <div className="flashcard-side flashcard-back">
-                    {shareButton}
                     {renderContent(back)}
                 </div>
             </motion.div>

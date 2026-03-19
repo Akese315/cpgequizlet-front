@@ -170,7 +170,7 @@
    ============================== */
 @media (max-width: 640px) {
     .flashcard-container {
-        height: 18rem;
+        height: min(24rem, 70vh);
         margin: 1rem auto;
     }
 
@@ -199,6 +199,12 @@
 
     .flashcard-image {
         max-height: 40%;
+    }
+
+    .flashcard-explanation {
+        font-size: 0.95rem;
+        margin-top: 1rem;
+        padding: 1rem;
     }
 }
 
